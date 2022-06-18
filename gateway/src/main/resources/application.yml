@@ -1,0 +1,28 @@
+server:
+  port: 11100
+spring:
+  application:
+    name: gateway
+  cloud:
+    zookeeper:
+      discovery:
+        enabled: true
+      connect-string: 127.0.0.1:2181
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+      default-filters:
+        - name: RequestRateLimiter
+          args:
+            redis-rate-limiter.replenishRate: 1 # 令牌桶填充的速率 秒为单位
+            redis-rate-limiter.burstCapacity: 1 # 令牌桶总容量
+            redis-rate-limiter.requestedTokens: 1 # 每次请求获取的令牌数
+            key-resolver: "#{@pathKeyResolver}"
+  redis:
+    host: 127.0.0.1
+    port: 6379
+
+logging:
+  level:
+    org.spring: trace

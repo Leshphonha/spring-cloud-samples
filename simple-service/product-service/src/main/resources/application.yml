@@ -1,0 +1,21 @@
+server:
+  port: 11202
+spring:
+  application:
+    name: product-service
+  cloud:
+    zookeeper:
+      connect-string: localhost:2181
+resilience4j:
+  circuitbreaker:
+    order-service:
+      registerHealthIndicator: true
+      slidingWindowSize: 1
+  timelimiter:
+    instances:
+      order-service:
+        timeoutDuration: 1s
+        cancelRunningFuture: true
+logging:
+  level:
+    root: info
